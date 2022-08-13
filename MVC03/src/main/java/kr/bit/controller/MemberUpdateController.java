@@ -16,7 +16,7 @@ public class MemberUpdateController extends HttpServlet {
 	protected void service(HttpServletRequest request, HttpServletResponse response) 
 			                                   throws ServletException, IOException {
 		request.setCharacterEncoding("utf-8");
-		//파라메터 수집(VO)
+		//�뙆�씪硫뷀꽣 �닔吏�(VO)
 		int num=Integer.parseInt(request.getParameter("num"));
 		int age=Integer.parseInt(request.getParameter("age"));
 		String email=request.getParameter("email");
@@ -31,10 +31,10 @@ public class MemberUpdateController extends HttpServlet {
 		MemberDAO dao=new MemberDAO();
 		int cnt=dao.memberUpdate(vo);
 		if(cnt>0) {
-		    	// 가입성공		        
-		    	response.sendRedirect("/MVC01/memberList.do");
+		    	// 媛��엯�꽦怨�		        
+		    	response.sendRedirect("/MVC03/memberList.do");
 		 }else {
-		    	// 가입실패-> 예외객체를 만들어서  WAS에게 던지자.
+		    	// 媛��엯�떎�뙣-> �삁�쇅媛앹껜瑜� 留뚮뱾�뼱�꽌  WAS�뿉寃� �뜕吏��옄.
 		    	throw new ServletException("not update");	    	
 		 }	
 	}

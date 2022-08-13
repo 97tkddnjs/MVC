@@ -7,30 +7,30 @@ public class MemberDAO {
    private PreparedStatement ps;
    private ResultSet rs;
    
-   // 데이터베이스 연결객체 생성(Connection)
+   // �뜲�씠�꽣踰좎씠�뒪 �뿰寃곌컼泥� �깮�꽦(Connection)
    public void getConnect() {
-	   //데이터베이스접속URL
+	   //�뜲�씠�꽣踰좎씠�뒪�젒�냽URL
 	   String URL="jdbc:mysql://localhost:3306/test?characterEncoding=UTF-8&serverTimeZone=UTC";
 	   String user="root";
-	   String password="admin12345";
+	   String password="1234";
 	   // MySQL Driver Loading
 	  try {
- 		  //동적로딩(실행시점에서 객체를 생성하는 방법)
-		  Class.forName("com.mysql.jdbc.Driver");		  
+ 		  //�룞�쟻濡쒕뵫(�떎�뻾�떆�젏�뿉�꽌 媛앹껜瑜� �깮�꽦�븯�뒗 諛⑸쾿)
+		  Class.forName("com.mysql.cj.jdbc.Driver");		  
 		  conn=DriverManager.getConnection(URL, user, password);
 	   } catch (Exception e) {
 		  e.printStackTrace();
 	  }		   
    }   
-   // 회원저장 동작
+   // �쉶�썝���옣 �룞�옉
    public int memberInsert(MemberVO vo) {
-	  //                                                             ?(파라메터) 1 2 3 4 5 6   
+	  //                                                             ?(�뙆�씪硫뷀꽣) 1 2 3 4 5 6   
 	  String SQL="insert into member(id, pass, name, age, email, phone) values(?,?,?,?,?,?)"; 
 	  getConnect();
-	  // SQL문장을 전송하는 객체 생성
+	  // SQL臾몄옣�쓣 �쟾�넚�븯�뒗 媛앹껜 �깮�꽦
 	  int cnt=-1;
 	  try {
-		ps=conn.prepareStatement(SQL); //미리 컴파일을 시킨다.(속도가빠르기)
+		ps=conn.prepareStatement(SQL); //誘몃━ 而댄뙆�씪�쓣 �떆�궓�떎.(�냽�룄媛�鍮좊Ⅴ湲�)
 		ps.setString(1, vo.getId());
 		ps.setString(2, vo.getPass());
 		ps.setString(3, vo.getName());
@@ -38,7 +38,7 @@ public class MemberDAO {
 		ps.setString(5, vo.getEmail());
 		ps.setString(6, vo.getPhone());
 		//  1,0
-		cnt=ps.executeUpdate(); //전송(실행)
+		cnt=ps.executeUpdate(); //�쟾�넚(�떎�뻾)
 		
 	   }catch (Exception e) {
 		e.printStackTrace();
@@ -47,14 +47,14 @@ public class MemberDAO {
 	  }
 	  return cnt; // 1 or 0
    }
-   // 회원(VO)전체 리스트(ArrayList) 가져오기
+   // �쉶�썝(VO)�쟾泥� 由ъ뒪�듃(ArrayList) 媛��졇�삤湲�
    public ArrayList<MemberVO> memberList() {
 	 String SQL="select * from member";
 	 getConnect();
 	 ArrayList<MemberVO> list=new ArrayList<MemberVO>();
 	 try {
 	   ps=conn.prepareStatement(SQL);
-	   rs=ps.executeQuery(); // rs->커서
+	   rs=ps.executeQuery(); // rs->而ㅼ꽌
 	   while(rs.next()) {
 		   int num=rs.getInt("num");
 		   String id=rs.getString("id");
@@ -63,7 +63,7 @@ public class MemberDAO {
 		   int age=rs.getInt("age");
 		   String email=rs.getString("email");
 		   String phone=rs.getString("phone");
-		   // 묶고->담고
+		   // 臾띔퀬->�떞怨�
 		   MemberVO vo=new MemberVO(num, id, pass, name, age, email, phone);
 		   list.add(vo);		   
 	   }
@@ -98,7 +98,7 @@ public class MemberDAO {
 		 ps.setInt(1, num);
 		 rs=ps.executeQuery();
 		 if(rs.next()) {
-			 //회원한명의 정보를 가져와서->묶고(VO)
+			 //�쉶�썝�븳紐낆쓽 �젙蹂대�� 媛��졇���꽌->臾띔퀬(VO)
 			   num=rs.getInt("num");
 			   String id=rs.getString("id");
 			   String pass=rs.getString("pass");
@@ -133,7 +133,7 @@ public class MemberDAO {
 	}	   
 	   return cnt;
    }
-   // 데이터베이스 연결 끊기
+   // �뜲�씠�꽣踰좎씠�뒪 �뿰寃� �걡湲�
    public void dbClose() {
 	  try { 
 	   if(rs!=null) rs.close();

@@ -16,14 +16,14 @@ public class MemberInsertController extends HttpServlet {
 	protected void service(HttpServletRequest request, HttpServletResponse response) 
 			                                          throws ServletException, IOException {
 		request.setCharacterEncoding("utf-8");
-		// 1. 파라메터수집(VO)
+		// 1. �뙆�씪硫뷀꽣�닔吏�(VO)
 		String id=request.getParameter("id");
 		String pass=request.getParameter("pass");
 		String name=request.getParameter("name");
 		int age=Integer.parseInt(request.getParameter("age")); // "40"->40
 		String email=request.getParameter("email");
 		String phone=request.getParameter("phone");
-		//파라메터수집(VO)
+		//�뙆�씪硫뷀꽣�닔吏�(VO)
 		//MemberVO vo=new MemberVO(id, pass, name, age, email, phone);
 		MemberVO vo=new MemberVO();
 		vo.setId(id);
@@ -34,16 +34,16 @@ public class MemberInsertController extends HttpServlet {
 		vo.setPhone(phone);
 		
 		//System.out.println(vo); // vo.toString()
-		// Model과 연동부분
+		// Model怨� �뿰�룞遺�遺�
 	    MemberDAO dao=new MemberDAO();
 	    int cnt=dao.memberInsert(vo);
 	    //PrintWriter out=response.getWriter();
 	    if(cnt>0) {
-	    	// 가입성공
-	        //out.println("insert success");	// 다시 회원리스트 보기로 가야된다.(/MVC01/memberList.do)
-	    	response.sendRedirect("/MVC01/memberList.do");
+	    	// 媛��엯�꽦怨�
+	        //out.println("insert success");	// �떎�떆 �쉶�썝由ъ뒪�듃 蹂닿린濡� 媛��빞�맂�떎.(/MVC01/memberList.do)
+	    	response.sendRedirect("/MVC03/memberList.do");
 	    }else {
-	    	// 가입실패-> 예외객체를 만들어서  WAS에게 던지자.
+	    	// 媛��엯�떎�뙣-> �삁�쇅媛앹껜瑜� 留뚮뱾�뼱�꽌  WAS�뿉寃� �뜕吏��옄.
 	    	throw new ServletException("not insert");	    	
 	    }		
 	}
