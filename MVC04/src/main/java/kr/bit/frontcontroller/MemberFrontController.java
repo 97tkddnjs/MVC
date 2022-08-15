@@ -25,32 +25,107 @@ public class MemberFrontController extends HttpServlet {
 	 */
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		// Å¬¶óÀÌ¾ğÆ®°¡ ¾î¶² ¿äÃ»À» Çß´Â Áö ÆÄ¾ÇÇÏ±â
+		request.setCharacterEncoding("UTF-8");
+		// í´ë¼ì´ì–¸íŠ¸ê°€ ì–´ë–¤ ìš”ì²­ì„ í–ˆëŠ” ì§€ íŒŒì•…í•˜ê¸°
 		String url = request.getRequestURI();
 		System.out.println(url);
 		
 		String ctx = request.getContextPath();
 		
-		// ½ÇÁ¦·Î ¿äÃ»ÇÑ ¸í·ÉÀÌ ¹«¾ùÀÎÁö ÆÄ¾Ç!
+		// ì‹¤ì œë¡œ ìš”ì²­í•œ ëª…ë ¹ì´ ë¬´ì—‡ì¸ì§€ íŒŒì•…!
 		String command = url.substring(ctx.length());
 		
-		// ¿äÃ»¿¡ µû¸¥ ºĞ±âÀÛ¾÷
-		if(command.equals("/memberList.do")) { // È¸¿ø¸®½ºÆ® º¸±â
+		// ìš”ì²­ì— ë”°ë¥¸ ë¶„ê¸°ì‘ì—…
+		if(command.equals("/memberList.do")) { // íšŒì›ë¦¬ìŠ¤íŠ¸ ë³´ê¸°
 			MemberDAO dao =new MemberDAO();
 			List<MemberVO> list =dao.memberList();
 			request.setAttribute("list", list);
 			RequestDispatcher rd = request.getRequestDispatcher("member/memberList.jsp");
 			rd.forward(request, response);
 			
-		}else if(command.equals("/memberInsert.do")) { // È¸¿ø°¡ÀÔ
+		}else if(command.equals("/memberInsert.do")) { // íšŒì›ê°€ì…
+			String id=request.getParameter("id");
+			String pass=request.getParameter("pass");
+			String name=request.getParameter("name");
+			int age=Integer.parseInt(request.getParameter("age")); // "40"->40
+			String email=request.getParameter("email");
+			String phone=request.getParameter("phone");
 			
-		}else if(command.equals("/memberRegister.do")) { // È¸¿ø°¡ÀÔ È­¸é
+			MemberVO vo=new MemberVO();
+			vo.setId(id);
+			vo.setPass(pass);
+			vo.setName(name);
+			vo.setAge(age);
+			vo.setEmail(email);
+			vo.setPhone(phone);
 			
-		}else if(command.equals("/memberContent.do")) { // È¸¿ø »ó¼¼º¸±â ¸ñ·Ï
+			System.out.println(vo); // vo.toString()
+			// Model
+		    MemberDAO dao=new MemberDAO();
+		    int cnt=dao.memberInsert(vo);
+		    //PrintWriter out=response.getWriter();
+		    if(cnt>0) {
+		    	// 
+		        //out.println("insert success");	// 
+		    	response.sendRedirect("/MVC04/memberList.do");
+		    }else {
+		    	//
+		    	throw new ServletException("not insert");	    	
+		    }
 			
-		}else if(command.equals("/memberUpdate.do")) { // È¸¿ø ¼öÁ¤
 			
-		}else if(command.equals("/memberDelete.do")) { // È¸¿ø »èÁ¦
+		}else if(command.equals("/memberRegister.do")) { // íšŒì›ê°€ì… í™”ë©´
+			
+			RequestDispatcher rd = request.getRequestDispatcher("member/memberRegister.html");
+			rd.forward(request, response);
+			
+		}else if(command.equals("/memberContent.do")) { // íšŒì› ìƒì„¸ë³´ê¸° ëª©ë¡
+			
+			int num=Integer.parseInt(request.getParameter("num"));
+			
+			MemberDAO dao=new MemberDAO();
+			MemberVO vo=dao.memberContent(num);
+			
+			//ê°ì²´ ë°”ì¸ë”©
+			request.setAttribute("vo",vo);
+			RequestDispatcher rd = request.getRequestDispatcher("member/memberContent.jsp");
+			rd.forward(request, response);
+			
+		}else if(command.equals("/memberUpdate.do")) { // íšŒì› ìˆ˜ì •
+			
+			int num=Integer.parseInt(request.getParameter("num"));
+			int age=Integer.parseInt(request.getParameter("age"));
+			String email=request.getParameter("email");
+			String phone=request.getParameter("phone");
+			
+			MemberVO vo=new MemberVO();
+			vo.setNum(num);
+			vo.setAge(age);
+			vo.setEmail(email);
+			vo.setPhone(phone);
+			
+			MemberDAO dao=new MemberDAO();
+			int cnt=dao.memberUpdate(vo);
+			if(cnt>0) {
+			    	// åª›ï¿½ï¿½ì—¯ï¿½ê½¦æ€¨ï¿½		        
+			    	response.sendRedirect("/MVC04/memberList.do");
+			 }else {
+			    	// åª›ï¿½ï¿½ì—¯ï¿½ë–ï¿½ë™£-> ï¿½ì‚ï¿½ì‡…åª›ì•¹ê»œç‘œï¿½ ï§ëš®ë±¾ï¿½ë¼±ï¿½ê½Œ  WASï¿½ë¿‰å¯ƒï¿½ ï¿½ëœ•ï§ï¿½ï¿½ì˜„.
+			    	throw new ServletException("not update");	    	
+			 }	
+			
+		}else if(command.equals("/memberDelete.do")) { // íšŒì› ì‚­ì œ
+			
+			// http://127.0.0.1:8081/MVC01/memberDelete.do?num=7
+			int num=Integer.parseInt(request.getParameter("num"));
+			
+			MemberDAO dao=new MemberDAO();
+			int cnt=dao.memberDelete(num);
+			if(cnt>0) {
+				response.sendRedirect("/MVC04/memberList.do");
+			}else {
+				throw new ServletException("not delete");	
+			}
 			
 		}// if end
 

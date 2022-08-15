@@ -50,7 +50,7 @@
 		
 	<%	} %>
 	<tr>
-		<td colspan="7" align="right"><input type="button" value="회원가입" class="btn btn-primary" onclick="location.href='member/memberRegister.html'"/></td>
+		<td colspan="7" align="right"><input type="button" value="회원가입" class="btn btn-primary" onclick="location.href='/MVC04/memberRegister.do'"/></td>
 	</tr>
 	
 </table>
