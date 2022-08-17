@@ -38,48 +38,25 @@ public class MemberFrontController extends HttpServlet {
 		String command = url.substring(ctx.length());
 		
 		Controller controller= null;
-		String nextPage;
+		String nextPage =null;
 		// 요청에 따른 분기작업
-		if(command.equals("/memberList.do")) { // 회원리스트 보기
-			controller=new MemberListController();
-			nextPage=controller.requestHandler(request, response);
-			
-			RequestDispatcher rd = request.getRequestDispatcher(nextPage);
-			rd.forward(request, response);
-			
-		}else if(command.equals("/memberInsert.do")) { // 회원가입
-			controller=new MemberInsertController();
-			nextPage=controller.requestHandler(request, response);
-			response.sendRedirect(nextPage);
-			
-		}else if(command.equals("/memberRegister.do")) { // 회원가입 화면
-			controller=new MemberRegisterController();
-			nextPage=controller.requestHandler(request, response);
-			
-			RequestDispatcher rd = request.getRequestDispatcher(nextPage);
-			rd.forward(request, response);
-			
-		}else if(command.equals("/memberContent.do")) { // 회원 상세보기 목록
-			
-			controller=new MemberContentController();
-			nextPage=controller.requestHandler(request, response);
-			
-			RequestDispatcher rd = request.getRequestDispatcher(nextPage);
-			rd.forward(request, response);
-			
-		}else if(command.equals("/memberUpdate.do")) { // 회원 수정
-			
-			controller=new MemberUpdateController();
-			nextPage=controller.requestHandler(request, response);
-			response.sendRedirect(nextPage);
-			
-		}else if(command.equals("/memberDelete.do")) { // 회원 삭제
-			
-			controller=new MemberDeleteController();
-			nextPage=controller.requestHandler(request, response);
-			response.sendRedirect(nextPage);
-			
-		}// if end
+		// 핸들러 매핑 -> 경로에 대한 핸들러 매핑을 말한다. ->HandlerMapping을 통해서 새롭게 받도록 하려고 함!
+		
+		HandlerMapping mapping =new HandlerMapping();
+		controller=mapping.getController(command);
+		nextPage = controller.requestHandler(request, response);
+		
+		
+		// forward , redirect
+		if(nextPage !=null)
+		{
+			if(nextPage.indexOf("redirect:")!=-1) {
+				response.sendRedirect(nextPage.split(":")[1]); //redirect
+			}else {
+				RequestDispatcher rd = request.getRequestDispatcher(ViewResolver.makeView(nextPage));
+				rd.forward(request, response);
+			}
+		}
 
 		
 	}

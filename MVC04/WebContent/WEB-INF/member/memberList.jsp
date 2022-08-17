@@ -6,6 +6,8 @@
 <%
 	ArrayList<MemberVO> list = (ArrayList<MemberVO>)request.getAttribute("list");
 %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<c:set var="ctx" value="${pageContext.request.contextPath}"/>
 <!DOCTYPE html>
 <html>
 <head>
@@ -50,7 +52,7 @@
 		
 	<%	} %>
 	<tr>
-		<td colspan="7" align="right"><input type="button" value="회원가입" class="btn btn-primary" onclick="location.href='/MVC04/memberRegister.do'"/></td>
+		<td colspan="7" align="right"><input type="button" value="회원가입" class="btn btn-primary" onclick="location.href='${ctx}/memberRegister.do'"/></td>
 	</tr>
 	
 </table>

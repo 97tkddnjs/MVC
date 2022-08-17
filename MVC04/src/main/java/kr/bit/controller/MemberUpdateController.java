@@ -14,6 +14,7 @@ public class MemberUpdateController implements Controller {
 	@Override
 	public String requestHandler(HttpServletRequest request,HttpServletResponse response) throws ServletException,  IOException
 	{
+		String ctx = request.getContextPath(); //MVC04~~
 		int num=Integer.parseInt(request.getParameter("num"));
 		int age=Integer.parseInt(request.getParameter("age"));
 		String email=request.getParameter("email");
@@ -32,7 +33,7 @@ public class MemberUpdateController implements Controller {
 		
 		if(cnt>0) {
 		    	// 가입성공	        
-			nextPage= "/MVC04/memberList.do";
+			nextPage= "redirect:"+ctx+"/memberList.do";
 		 }else {
 		    	// 가입실패 -> 예외 객체를 만들어서 WAS에게 던지자.
 		    	throw new ServletException("not update");	    	

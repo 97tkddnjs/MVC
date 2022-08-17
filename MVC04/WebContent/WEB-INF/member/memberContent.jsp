@@ -4,6 +4,8 @@
 <%
 	MemberVO vo = (MemberVO)request.getAttribute("vo");
 %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<c:set var="ctx" value="${pageContext.request.contextPath}"/>
 <!DOCTYPE html>
 <html>
 <head>
@@ -15,7 +17,7 @@
 <script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js'></script>
 </head>
 <body>
-<form action='memberUpdate.do' method='post'>
+<form action='${ctx }/memberUpdate.do' method='post'>
 <input type='hidden' name='num' value="<%=vo.getNum() %>"/>
 <table class='table table-bordered'> 
 <% if(vo!=null){ %>
@@ -59,7 +61,7 @@
 		<td colspan="2" align="center">
 			<input type="submit" value="수정하기" class='btn btn-primary'>
 			<input type="reset" value="취소"class='btn btn-warning'>
-			<input type="button" value="리스트" onclick="location.href='/MVC03/memberList.do'" class='btn'/>
+			<input type="button" value="리스트" onclick="location.href='${ctx}/memberList.do'" class='btn'/>
 		</td>
 	</tr>
 </table>

@@ -13,18 +13,21 @@ public class MemberDeleteController implements Controller {
 	public String requestHandler(HttpServletRequest request,HttpServletResponse response) throws ServletException,  IOException
 	{
 		// http://127.0.0.1:8081/MVC01/memberDelete.do?num=7
-					int num=Integer.parseInt(request.getParameter("num"));
 					
-					MemberDAO dao=new MemberDAO();
-					int cnt=dao.memberDelete(num);
+		String ctx = request.getContextPath(); //MVC04~~
+		int num=Integer.parseInt(request.getParameter("num"));
 					
-					String nextPage =null;
-					if(cnt>0) {
-						nextPage="/MVC04/memberList.do";
-					}else {
-						throw new ServletException("not delete");	
-					}
-					return nextPage;
+					
+		MemberDAO dao=new MemberDAO();
+		int cnt=dao.memberDelete(num);
+					
+		String nextPage =null;
+		if(cnt>0) {
+			nextPage="redirect:" +ctx+"/memberList.do";
+		}else {
+			throw new ServletException("not delete");	
+		}
+		return nextPage;
 	}
 
 }
